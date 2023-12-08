@@ -9,13 +9,16 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_HOST=${N8N_URL}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - NODE_ENV=production
       - WEBHOOK_URL=https://${N8N_URL}/
       - GENERIC_TIMEZONE=America/Sao_Paulo
       - TZ=America/Sao_Paulo
+
+      # Configurações de Monitoramento
+      - N8N_METRICS=true
+      - QUEUE_HEALTH_CHECK_ACTIVE=true
 
       # Configuração do DB
       - DB_TYPE=postgresdb
@@ -33,16 +36,12 @@ services:
       - N8N_SMTP_PASS=Dm8j5j#0j#
       - N8N_SMTP_SENDER=suporte@tecnocomp.com.br
       - N8N_SMTP_SSL=false
-
-      # Configuração de Autenticação
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=
-      - N8N_BASIC_AUTH_PASSWORD=
     volumes:
       - N8N-APP-DATA:/home/node/.n8n
       - N8N-APP-DATA-FILES:/files
     networks:
-      - N8N-NETWORK
+      - N8N-NETWORK-BACK
+      - N8N-NETWORK-FRONT
     links:
       - db
     depends_on:
@@ -67,7 +66,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - N8N-NETWORK    
+      - N8N-NETWORK-BACK   
 
 volumes:
   N8N-APP-DATA:
@@ -75,4 +74,6 @@ volumes:
   N8N-DB-DATA:
 
 networks:
-  N8N-NETWORK:
+  N8N-NETWORK-BACK:
+  N8N-NETWORK-FRONT:
+    driver: bridge
