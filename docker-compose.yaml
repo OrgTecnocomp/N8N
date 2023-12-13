@@ -32,9 +32,9 @@ services:
       - N8N_EMAIL_MODE=smtp
       - N8N_SMTP_HOST=outlook.office365.com
       - N8N_SMTP_PORT=587
-      - N8N_SMTP_USER=suporte@tecnocomp.com.br
-      - N8N_SMTP_PASS=Dm8j5j#0j#
-      - N8N_SMTP_SENDER=suporte@tecnocomp.com.br
+      - N8N_SMTP_USER=${SMTP_USER}
+      - N8N_SMTP_PASS=${SMTP_PASS}
+      - N8N_SMTP_SENDER=${SMTP_USER}
       - N8N_SMTP_SSL=false
     volumes:
       - N8N-APP-DATA:/home/node/.n8n
